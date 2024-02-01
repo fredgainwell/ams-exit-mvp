@@ -2,13 +2,37 @@
   become: yes
   connection: local
 
+  vars_files:
+        - state_info.yml
+# vars file has all_states variable and other vars
+
   tasks:
 
-   - name: set state and environment and AWS_ACCT values
+   - name: set state environment resource and AWS_ACCT values
      set_fact: 
          state: "{{ snow_payload['state'] | upper }}"
          env: "{{ snow_payload['environment'] }}"
          aws_acct: "{{ snow_payload['aws_acct'] }}"
+         resource: "{{ snow_payload['env'] | upper }}"
+
+   - name: validate state is in list of all_states
+     assert:
+       that:
+          - "state in all_states"
+       fail_msg: "state must be a state in the list all_states"
+
+    - name: validate env is a valid environment in a state
+      assert:
+          that:
+            - "env in all_states['state']"
+          fail_msg: "env  must be a valid value in the list all_states['state']"
+    
+    - name: validate aws_acct is valid for the state
+      assert:
+          that:
+            - "aws_acct in all_states['accounts']"
+          fail_msg: "aws account must be valid for the state"
+    
 
    - name: create and launch resource template in awx 
      include_tasks: 
