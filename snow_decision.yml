@@ -11,4 +11,4 @@
          aws_acct: "{{ snow_payload['aws_acct'] }}"
 
    - name: launch a template to create the resource 
-     include_tasks: tasks/launch_resource_template.yml
+     include_tasks: launch_resource_template.yml
