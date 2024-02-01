@@ -10,5 +10,6 @@
          env: "{{ snow_payload['environment'] }}"
          aws_acct: "{{ snow_payload['aws_acct'] }}"
 
-   - name: launch a template to create the resource 
-     include_tasks: launch_resource_template.yml
+   - name: create and launch resource template in awx 
+     include_tasks: 
+             file: launch_resource_template.yml
