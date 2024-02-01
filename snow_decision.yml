@@ -1,0 +1,14 @@
+- hosts: localhost
+  become: yes
+  connection: local
+
+  tasks:
+
+   - name: set state and environment and AWS_ACCT values
+     set_fact: 
+         state: "{{ snow_payload['state'] | upper }}"
+         env: "{{ snow_payload['environment'] }}"
+         aws_acct: "{{ snow_payload['aws_acct'] }}"
+
+   - name: launch a template to create the resource 
+     include_tasks: tasks/launch_resource_template.yml
